@@ -1,6 +1,6 @@
 ﻿namespace CommGate.Data
 {
-    public class Class1
+    public class DbInitializer
     {
 
     }
