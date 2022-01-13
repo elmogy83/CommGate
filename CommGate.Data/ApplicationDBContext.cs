@@ -12,7 +12,7 @@ namespace CommGate.Data
     {
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }
 
-        public virtual DbSet<UserProfile> UserProfiles { get; set; }
+        public virtual DbSet<User> UserProfiles { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
     }

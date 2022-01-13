@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CommGate.Core.Entities
 {
-    public class Role
+    public class Status:BaseEntity
     {
-        public Role() { 
-            UserRoles = new HashSet<UserRole>();
-        }
+     
         [Key]
         public int Id { get; set; }
         [Required]
-        public string Name { get; set; }
-        public virtual ICollection<UserRole> UserRoles { get; set; }
+        public string TitleEn { get; set; }
+        [Required]
+        public string TitleAr { get; set; }
     }
 }
