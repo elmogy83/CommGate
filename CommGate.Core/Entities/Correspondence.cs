@@ -26,7 +26,7 @@ namespace CommGate.Core.Entities
         public string PWARefNo { get; set; }
         public DateTime? SentDate { get; set; }
         public DateTime? RecivedDate { get; set; }
-        public byte StatusId { get; set; }
+        public int StatusId { get; set; }
         public virtual Status Status { get; set; }
         public int DepartmentId { get; set; }
         public virtual Department Department { get; set; }

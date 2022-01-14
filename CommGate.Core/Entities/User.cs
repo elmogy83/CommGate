@@ -21,7 +21,7 @@ namespace CommGate.Core.Entities
         [Required]
         public string JobTitle { get; set; }
         public int? CompanyId { get; set; }
-        public Company? Company { get; set; }
+        public virtual Company? Company { get; set; }
 
 
 
