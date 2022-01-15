@@ -5,24 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommGate.Core.Entities
+namespace CommGate.Core.DTOs
 {
-    public class Department:BaseEntity
+    public class DepartmentVM:BaseEntityVM
     {
-        public Department()
+        public DepartmentVM()
         {
-            Correspondences=new HashSet<Correspondence>();
+            Correspondences=new HashSet<CorrespondenceVM>();
         }
-        [Key]
+      
         public int Id { get; set; }
         [Required]
-        [MaxLength(256)]
         public string NameEn { get; set; }
         [Required]
-        [MaxLength(256)]
         public string NameAr { get; set; }
 
-        public virtual ICollection<Correspondence> Correspondences { get; set; }
+        public virtual ICollection<CorrespondenceVM> Correspondences { get; set; }
 
 
     }

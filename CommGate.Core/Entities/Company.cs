@@ -11,11 +11,12 @@ namespace CommGate.Core.Entities
     {
         public Company()
         {
-            Users = new HashSet<User>();
+            //Users = new HashSet<User>();
         }
         [Key]
         public int Id { get; set; }
+        [MaxLength(300)]
         public string Title { get; set; }
-        public virtual ICollection<User> Users { get; set; }
+       // public virtual ICollection<User> Users { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CommGate.Data.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20220114135451_InitiateDB")]
+    [Migration("20220115221204_InitiateDB")]
     partial class InitiateDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,7 +82,8 @@ namespace CommGate.Data.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.HasKey("Id");
 
@@ -97,9 +98,6 @@ namespace CommGate.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<Guid>("CorrespondenceId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
@@ -111,7 +109,8 @@ namespace CommGate.Data.Migrations
 
                     b.Property<string>("ExternalRefNo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("LastModifiedBy")
                         .HasColumnType("int");
@@ -121,7 +120,8 @@ namespace CommGate.Data.Migrations
 
                     b.Property<string>("PWARefNo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("PurposeId")
                         .HasColumnType("int");
@@ -164,19 +164,21 @@ namespace CommGate.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DepartmentNameAr")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DepartmentNameEn")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("LastModifiedBy")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("LastModifiedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
@@ -202,7 +204,8 @@ namespace CommGate.Data.Migrations
 
                     b.Property<string>("DocumentNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("DocumentTitle")
                         .IsRequired()
@@ -244,7 +247,8 @@ namespace CommGate.Data.Migrations
 
                     b.Property<string>("EventName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int?>("ItemID")
                         .HasColumnType("int");
@@ -263,7 +267,8 @@ namespace CommGate.Data.Migrations
 
                     b.Property<string>("TableName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("ID");
 
@@ -292,32 +297,17 @@ namespace CommGate.Data.Migrations
 
                     b.Property<string>("TitleAr")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("TitleEn")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Purposes");
-                });
-
-            modelBuilder.Entity("CommGate.Core.Entities.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("CommGate.Core.Entities.Status", b =>
@@ -351,74 +341,6 @@ namespace CommGate.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Statuses");
-                });
-
-            modelBuilder.Entity("CommGate.Core.Entities.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("JobTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LastModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("CommGate.Core.Entities.UserRole", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("CommGate.Core.Entities.ActionHistory", b =>
@@ -470,29 +392,6 @@ namespace CommGate.Data.Migrations
                     b.Navigation("Correspondence");
                 });
 
-            modelBuilder.Entity("CommGate.Core.Entities.User", b =>
-                {
-                    b.HasOne("CommGate.Core.Entities.Company", "Company")
-                        .WithMany("Users")
-                        .HasForeignKey("CompanyId");
-
-                    b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("CommGate.Core.Entities.UserRole", b =>
-                {
-                    b.HasOne("CommGate.Core.Entities.Role", null)
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CommGate.Core.Entities.Company", b =>
-                {
-                    b.Navigation("Users");
-                });
-
             modelBuilder.Entity("CommGate.Core.Entities.Correspondence", b =>
                 {
                     b.Navigation("ActionHistories");
@@ -508,11 +407,6 @@ namespace CommGate.Data.Migrations
             modelBuilder.Entity("CommGate.Core.Entities.Purpose", b =>
                 {
                     b.Navigation("Correspondences");
-                });
-
-            modelBuilder.Entity("CommGate.Core.Entities.Role", b =>
-                {
-                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

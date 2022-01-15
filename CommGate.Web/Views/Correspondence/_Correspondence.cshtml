@@ -1,0 +1,183 @@
+﻿
+@using CommGate.Core.DTOs
+@using CommGate.Web.Controllers
+@using Microsoft.Extensions.Localization
+@model PagingCollectionResult<CorrespondenceVM>
+@inject IStringLocalizer<CorrespondenceController> _stringLocalizer;
+@{
+    var cul = Context.Session.GetString("culture");
+}
+
+@if (Model != null && Model.Items != null && Model.TotalRecords > 0)
+{
+
+    <div >
+        <h2>@_stringLocalizer["ViewTitle"] ( @Model.TotalRecords )</h2>
+      
+    </div>
+    <input type="hidden" id="hdSortBy" value="@Model.SortBy" />
+    <input type="hidden" id="hdSortStyle" value="@Model.SortStyle" />
+
+    <div class="page-table boxShadow">
+        <table cellpadding="0" cellspacing="0" class="display dataTable" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        @_stringLocalizer["Subject"]
+                    </th>
+                    <th>
+                        @_stringLocalizer["Department"]
+                    </th>
+                    <th>
+                        @_stringLocalizer["ExternalRefNumber"]
+                    </th>
+                    <th>
+                        @_stringLocalizer["PWARefNumber"]
+                    </th>
+                    <th>
+                        @_stringLocalizer["Purpose"]
+                    </th>
+                    <th>
+                        @_stringLocalizer["ReceivedDate"]
+                    </th>                    
+                   
+
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var itemIndex = ((Model.PageIndex - 1) * Model.PageSize) + 1;
+                }
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>
+
+                            @Html.DisplayFor(modelItem => item.Subject)
+                        </td>
+                        <td>
+                             @(cul == "ar-SA" ? item.Department.NameAr : item.Department.NameEn)
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ExternalRefNo)
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PWARefNo)
+
+                        </td>
+                        <td>
+                               @(cul == "ar-SA" ? item.Purpose.TitleAr : item.Purpose.TitleEn)
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RecivedDateDisplay)
+
+                        </td>
+                                          </tr>
+                    itemIndex++;
+                }
+            </tbody>
+        </table>
+    </div>
+
+    if (Model.PagesCount > 0)
+    {
+        <div class="scrollPagination">
+            <div class="pagination-container">
+                <ul class="pagination">
+                    @{
+                        int startIndex = 1, pagesCount = Model.PagesCount, pageIndex = Model.PageIndex, endIndex = 1;
+                        if (pageIndex > 25)
+                        {
+                            startIndex = (25 * ((int)(pageIndex / 25))) + 1;
+                        }
+                        endIndex = (startIndex + 24);
+                        if (endIndex > pagesCount)
+                        {
+                            endIndex = pagesCount;
+                            startIndex = pagesCount > 25 ? pagesCount - 24 : startIndex;
+                        }
+                    }
+                    @if (startIndex > 1)
+                    {
+                        <li class="page-item txtpaging"><a class="page-link" href="javascript:btnCorrespondenceSearch_click(1); void 0">@_stringLocalizer["First"]</a></li>
+                    }
+                    @if (pageIndex > 1)
+                    {
+                        <li class="page-item txtpaging"><a class="page-link" href="javascript:btnCorrespondenceSearch_click(@(pageIndex - 1)); void 0" rel="prev">@_stringLocalizer["Prev"]</a></li>
+                    }
+                    @if (startIndex > 1)
+                    {
+                        <li class="page-item txtpaging"><a class="page-link" href="javascript:btnCorrespondenceSearch_click(@(startIndex-1)); void 0" rel="prev">@_stringLocalizer["Prev_30"]</a></li>
+
+                    }
+                    @for (int i = startIndex; i <= endIndex; i++)
+                    {
+                        if (i == pageIndex)
+                        {
+                            <li class="page-item active"><span class="page-link">@i</span></li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link" href="javascript:btnCorrespondenceSearch_click(@i); void 0">@i</a></li>
+                        }
+
+                    }
+                    @if (endIndex < pagesCount)
+                    {
+                        <li class="page-item txtpaging"><a class="page-link" href="javascript:btnCorrespondenceSearch_click(@(endIndex+1)); void 0" rel="next">@_stringLocalizer["Next_30"]</a></li>
+
+                    }
+                    @if (pageIndex < pagesCount)
+                    {
+                        <li class="page-item txtpaging"><a class="page-link" href="javascript:btnCorrespondenceSearch_click(@(pageIndex+1)); void 0" rel="next">@_stringLocalizer["Next"]</a></li>
+                    }
+                    @if (endIndex < pagesCount)
+                    {
+                        <li class="page-item txtpaging"><a class="page-link" href="javascript:btnCorrespondenceSearch_click(@pagesCount); void 0">@_stringLocalizer["Last"]</a></li>
+
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+}
+else if (Model == null || Model.Items.Count == 0)
+{
+    <div class="scrollHorizantal">
+        <table cellpadding="0" cellspacing="0" class="accordion">
+            <thead>
+                <tr>
+                   <th>
+                        @_stringLocalizer["Subject"]
+                    </th>
+                    <th>
+                        @_stringLocalizer["Department"]
+                    </th>
+                    <th>
+                        @_stringLocalizer["ExternalRefNumber"]
+                    </th>
+                    <th>
+                        @_stringLocalizer["PWARefNumber"]
+                    </th>
+                    <th>
+                        @_stringLocalizer["Purpose"]
+                    </th>
+                    <th>
+                        @_stringLocalizer["ReceivedDate"]
+                    </th>  
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="19"> @_stringLocalizer["Nodatafound"]</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+}
+

@@ -12,9 +12,6 @@ namespace CommGate.Data
     {
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }
 
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<ActionHistory> ActionHistories { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Correspondence> Correspondences { get; set; }

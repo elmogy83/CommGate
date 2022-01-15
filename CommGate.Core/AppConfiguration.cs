@@ -19,6 +19,13 @@ namespace CommGate.Core
                 .Build();
             return configuration.GetSection("ConnectionStrings").GetSection("DefaultConnection").Value;
         }
+        public static string GetAppSettingString(string Section, string subSection)
+        {
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"), optional: false)
+                .Build();
+            return configuration.GetSection(Section).GetSection(subSection).Value;
+        }
     }
     [AttributeUsage(AttributeTargets.Property)]
     public class RequiredIfTrueAttribute : ValidationAttribute, IClientModelValidator

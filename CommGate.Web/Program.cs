@@ -2,6 +2,7 @@ using CommGate.Data;
 using CommGate.Web;
 using ElmahCore.Mvc;
 using ElmahCore.Sql;
+using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +51,8 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(optio
     options.MultipartHeadersLengthLimit = int.MaxValue;
 });
 
+builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
+   .AddNegotiate();
 
 builder.Services.AddSession();
 
@@ -72,7 +75,7 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseElmah();
 var options = app.Services.GetService<IOptions<RequestLocalizationOptions>>();

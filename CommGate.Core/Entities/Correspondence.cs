@@ -16,13 +16,14 @@ namespace CommGate.Core.Entities
 
         }
         [Key]
-        public long Id { get; set; }
-        public Guid CorrespondenceId { get; set; }
+        public long Id { get; set; }      
         [Required]
         public string Subject { get; set; }
         public int PurposeId { get; set; }
         public virtual Purpose Purpose { get; set; }
+        [MaxLength(256)]
         public string ExternalRefNo { get; set; }
+        [MaxLength(256)]
         public string PWARefNo { get; set; }
         public DateTime? SentDate { get; set; }
         public DateTime? RecivedDate { get; set; }

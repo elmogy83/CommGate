@@ -5,20 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommGate.Core.Entities
+namespace CommGate.Core.DTOs
 {
-    public class Document:BaseEntity
+    public class DocumentVM:BaseEntityVM
     {
-        [Key]
-        public long Id { get; set; }        
+       
+        public long Id { get; set; }
         public string Name { get; set; }
         public string DocumentTitle { get; set; }
         public long Size { get; set; }
         public byte TypeId { get; set; }
-        [MaxLength(256)]
         public string DocumentNumber { get; set; }
         public long CorrespondenceId { get; set; }
-        public virtual Correspondence Correspondence { get; set; }
+        public virtual CorrespondenceVM Correspondence { get; set; }
 
     }
 }

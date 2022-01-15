@@ -1,0 +1,74 @@
+﻿@using CommGate.Web.Controllers
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<CorrespondenceController> _stringLocalizer;
+@{
+    ViewData["Title"] = _stringLocalizer["ViewTitle"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var cul = Context.Session.GetString("culture");
+}
+
+  
+    <div>
+        <h2>@ViewBag.Title</h2>
+    </div>
+
+<div >
+
+            <h3 class="flexer">
+                @_stringLocalizer["Search"]
+            
+            </h3>
+         
+                    
+          
+
+            <div  id="CorrespondenceItemsContainer">
+            </div>
+     
+</div>
+<div class="container" style="visibility:hidden"></div>
+<script type="text/javascript">
+    $(function () {
+        btnCorrespondenceSearch_click(1, 25,'','');
+
+       
+    });
+
+    function btnCorrespondenceClear_click() {
+      
+
+    }
+      function ddlStatusOnchange() {
+      
+    }
+    function btnCorrespondenceSearch_click(pageNumber, pageSize, SortBy, SortStyle) {
+        var searchFilter = {};
+       var loadData = true;
+      
+       
+      
+
+        searchFilter.PageIndex = pageNumber;
+        searchFilter.PageSize = pageSize;
+        var url = "@Url.Action("Search", "Correspondence")";
+        $.ajax(
+            {
+                type: 'POST',
+                url: url,
+                data: searchFilter,
+                dataType: 'html',
+                success: function (result) {
+                    $('#CorrespondenceItemsContainer').html($(result));
+                    LoadLargeColorBox();
+               
+
+                }
+            });
+        return false;
+    }
+
+    
+
+ 
+    </script>
+

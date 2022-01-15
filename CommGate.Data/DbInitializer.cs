@@ -15,23 +15,23 @@ namespace CommGate.Data
             context.Database.EnsureCreated();
 
 
-            if (context.Roles.Any())
-            {
-                logger.LogInformation("Roles were already seeded");
+            //if (context.Roles.Any())
+            //{
+            //    logger.LogInformation("Roles were already seeded");
 
-            }
-            else
-            {
-                logger.LogInformation("Start seeding the Roles .");
+            //}
+            //else
+            //{
+            //    logger.LogInformation("Start seeding the Roles .");
 
-                AddRoles(context);
+            //    AddRoles(context);
 
-                logger.LogInformation("Finished seeding Roles");
-            }
+            //    logger.LogInformation("Finished seeding Roles");
+            //}
             static void AddRoles(ApplicationDBContext context)
             {
 
-                context.Roles.Add(new Role
+              /*  context.Roles.Add(new Role
                 {
 
                     Name = "SystemUser"
@@ -52,7 +52,7 @@ namespace CommGate.Data
                     Name = "CompanyUser"
                 });
                 context.SaveChanges();
-              
+              */
             }            
         }
     }

@@ -15,7 +15,7 @@ namespace CommGate.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedBy = table.Column<int>(type: "int", nullable: false),
@@ -32,8 +32,8 @@ namespace CommGate.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DepartmentNameEn = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DepartmentNameAr = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NameEn = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    NameAr = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedBy = table.Column<int>(type: "int", nullable: false),
@@ -52,8 +52,8 @@ namespace CommGate.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EventDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ItemID = table.Column<int>(type: "int", nullable: true),
-                    TableName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EventName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TableName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    EventName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Record = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OldRecord = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NewRecord = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -69,8 +69,8 @@ namespace CommGate.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TitleEn = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TitleAr = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TitleEn = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    TitleAr = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedBy = table.Column<int>(type: "int", nullable: false),
@@ -79,19 +79,6 @@ namespace CommGate.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Purposes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Roles",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -113,62 +100,15 @@ namespace CommGate.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    JobTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CompanyId = table.Column<int>(type: "int", nullable: true),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedBy = table.Column<int>(type: "int", nullable: false),
-                    LastModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserRoles",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRoles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserRoles_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Correspondences",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CorrespondenceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Subject = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PurposeId = table.Column<int>(type: "int", nullable: false),
-                    ExternalRefNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PWARefNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExternalRefNo = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    PWARefNo = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     SentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RecivedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     StatusId = table.Column<int>(type: "int", nullable: false),
@@ -236,7 +176,7 @@ namespace CommGate.Data.Migrations
                     DocumentTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Size = table.Column<long>(type: "bigint", nullable: false),
                     TypeId = table.Column<byte>(type: "tinyint", nullable: false),
-                    DocumentNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DocumentNumber = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     CorrespondenceId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -278,16 +218,6 @@ namespace CommGate.Data.Migrations
                 name: "IX_Documents_CorrespondenceId",
                 table: "Documents",
                 column: "CorrespondenceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserRoles_RoleId",
-                table: "UserRoles",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_CompanyId",
-                table: "Users",
-                column: "CompanyId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -296,25 +226,16 @@ namespace CommGate.Data.Migrations
                 name: "ActionHistories");
 
             migrationBuilder.DropTable(
+                name: "Companies");
+
+            migrationBuilder.DropTable(
                 name: "Documents");
 
             migrationBuilder.DropTable(
                 name: "Logs");
 
             migrationBuilder.DropTable(
-                name: "UserRoles");
-
-            migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
                 name: "Correspondences");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
-
-            migrationBuilder.DropTable(
-                name: "Companies");
 
             migrationBuilder.DropTable(
                 name: "Departments");
