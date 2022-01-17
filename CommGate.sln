@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommGate.Service", "CommGat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommGate.API", "CommGate.API\CommGate.API.csproj", "{C459A210-B951-43CA-95BD-4A30876D3638}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommGate.Web", "CommGate.Web\CommGate.Web.csproj", "{46B8A3EA-4897-4435-81D6-ED5E7E24A323}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommGate.Web", "CommGate.Web\CommGate.Web.csproj", "{46B8A3EA-4897-4435-81D6-ED5E7E24A323}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommGate.WebAPI", "CommGate.WebAPI\CommGate.WebAPI.csproj", "{ACD341E7-275F-45FC-A7F0-F523135CC83A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{46B8A3EA-4897-4435-81D6-ED5E7E24A323}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46B8A3EA-4897-4435-81D6-ED5E7E24A323}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46B8A3EA-4897-4435-81D6-ED5E7E24A323}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACD341E7-275F-45FC-A7F0-F523135CC83A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACD341E7-275F-45FC-A7F0-F523135CC83A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACD341E7-275F-45FC-A7F0-F523135CC83A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACD341E7-275F-45FC-A7F0-F523135CC83A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

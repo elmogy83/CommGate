@@ -1,4 +1,5 @@
 ﻿using CommGate.Core.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,10 +9,14 @@ using System.Threading.Tasks;
 
 namespace CommGate.Data
 {
-    public class ApplicationDBContext : DbContext
+    public class ApplicationDBContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
-        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }
-
+        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
+             : base(options)
+        {
+        }
+        public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         public virtual DbSet<ActionHistory> ActionHistories { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Correspondence> Correspondences { get; set; }

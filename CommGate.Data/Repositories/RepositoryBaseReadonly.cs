@@ -1,57 +1,45 @@
-﻿using CommGate.Core.Interfaces;
-using CommGate.Core.Specifications;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
+using CommGate.Core.Interfaces;
+using CommGate.Core.Specifications;
 
 namespace CommGate.Data.Repositories
 {
-    public class RepositoryBase<T> : IRepositoryBase<T> where T : class
+    public class RepositoryBaseReadOnly<T> : IRepositoryReadonly<T> where T : class
     {
-        protected readonly ApplicationDBContext _dbContext;
+        #region Properties
+        protected ApplicationDBContext _dbContext;
 
-        public RepositoryBase(ApplicationDBContext dbContext)
+        #endregion
+
+        public RepositoryBaseReadOnly(ApplicationDBContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         #region Implementation
-
-        public virtual void Add(T entity)
+        public virtual T GetById(int id)
         {
-            _dbContext.Set<T>().Add(entity);
+            return _dbContext.Set<T>().Find(id);
         }
 
-        public virtual void AddRange(IEnumerable<T> entities)
+        public virtual T GetById(Guid id)
         {
-            _dbContext.Set<T>().AddRange(entities);
+            return _dbContext.Set<T>().Find(id);
         }
 
-        public virtual void Update(T entity)
+        public virtual T GetById(string id)
         {
-            _dbContext.Set<T>().Attach(entity);
-            _dbContext.Entry(entity).State = EntityState.Modified;
+            return _dbContext.Set<T>().Find(id);
         }
 
-        public virtual bool Attach(T entity)
+        public virtual async Task<T> GetByIdAsync(int id)
         {
-            _dbContext.Set<T>().Attach(entity);
-            return true;
-        }
-
-        public virtual void Delete(T entity)
-        {
-            _dbContext.Set<T>().Remove(entity);
-        }
-
-        public virtual void DeleteList(IEnumerable<T> entities)
-        {
-            foreach (var obj in entities)
-                _dbContext.Set<T>().Remove(obj);
+            return await _dbContext.Set<T>().FindAsync(id);
         }
 
         public virtual async Task<T> GetByIdAsync(Guid id)
@@ -64,9 +52,14 @@ namespace CommGate.Data.Repositories
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public virtual async Task<T> GetByIdAsync(int id)
+        public virtual IEnumerable<T> GetAll()
         {
-            return await _dbContext.Set<T>().FindAsync(id);
+            return _dbContext.Set<T>().ToList();
+        }
+
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
+        {
+            return await _dbContext.Set<T>().ToListAsync();
         }
 
         public T Get(Expression<Func<T, bool>> where)
@@ -79,19 +72,18 @@ namespace CommGate.Data.Repositories
             return await BuildQueryWithSpecifications(spec).SingleOrDefaultAsync();
         }
 
-        public virtual async Task<T> GetFirstOrDefaultAsync(ISpecification<T> spec, bool asNoTracking = false)
+        public virtual async Task<T> GetFirstOrDefaultAsync(ISpecification<T> spec)
         {
-            if (asNoTracking == false)
-                return await BuildQueryWithSpecifications(spec).FirstOrDefaultAsync();
-            else
-                return await BuildQueryWithSpecifications(spec).AsNoTracking().FirstOrDefaultAsync();
+            return await BuildQueryWithSpecifications(spec).FirstOrDefaultAsync();
         }
 
-        public virtual async Task<T> GetFirstOrDefaultAsync<Tkey>(ISpecification<T> spec, Expression<Func<T, Tkey>> sortSelector = null, bool isDescending = false)
+        public virtual async Task<T> GetFirstOrDefaultAsync<Tkey>(ISpecification<T> spec,
+          Expression<Func<T, Tkey>> keySelector = null,
+          bool isDescending = false)
         {
             IQueryable<T> query = BuildQueryWithSpecifications(spec);
 
-            query = isDescending ? query.OrderByDescending(sortSelector) : query.OrderBy(sortSelector);
+            query = isDescending ? query.OrderByDescending(keySelector) : query.OrderBy(keySelector);
             return await query.FirstOrDefaultAsync();
         }
 
@@ -112,7 +104,6 @@ namespace CommGate.Data.Repositories
             IQueryable<T> query = BuildQueryWithSpecifications(spec);
 
             query = isDescending ? query.OrderByDescending(keySelector) : query.OrderBy(keySelector);
-
             return await query.ToListAsync();
         }
 
@@ -140,7 +131,21 @@ namespace CommGate.Data.Repositories
                 query.OrderByDescending(keySelector).Skip(sorting.PageIndex * sorting.PageSize).Take(sorting.PageSize) :
                 query.OrderBy(keySelector).Skip(sorting.PageIndex * sorting.PageSize).Take(sorting.PageSize);
 
+            //var str = query.ToSql();
+
             return await query.ToListAsync();
+        }
+
+        public virtual async Task<IEnumerable<T>> DistinctAsync<Tkey>(ISpecification<T> spec,
+        Expression<Func<T, Tkey>> keySelector, Sorting sorting)
+        {
+            IQueryable<T> query = BuildQueryWithSpecifications(spec);
+
+            query = sorting.SortDirection == Sorting.SortDirectionType.Descending ?
+                query.OrderByDescending(keySelector).Skip(sorting.PageIndex * sorting.PageSize).Take(sorting.PageSize) :
+                query.OrderBy(keySelector).Skip(sorting.PageIndex * sorting.PageSize).Take(sorting.PageSize);
+
+            return await query.Distinct().ToListAsync();
         }
 
         public virtual async Task<bool> AnyAsync(ISpecification<T> spec)
@@ -158,33 +163,18 @@ namespace CommGate.Data.Repositories
             return await BuildQueryWithSpecifications(spec).CountAsync();
         }
 
-        public virtual async Task<Tkey> MaxAsync<Tkey>(ISpecification<T> spec, Expression<Func<T, Tkey>> keySelector)
+        public virtual async Task<double?> SumAsync(ISpecification<T> spec, Expression<Func<T, double?>> keySelector)
         {
             IQueryable<T> query = BuildQueryWithSpecifications(spec);
-
-            return await query.MaxAsync(keySelector);
-        }
-
-        public virtual async Task<decimal> SumAsync(ISpecification<T> spec, Expression<Func<T, decimal>> keySelector)
-        {
-            IQueryable<T> query = BuildQueryWithSpecifications(spec);
-
             return await query.SumAsync(keySelector);
         }
 
-        public virtual async Task<int> SumAsync(ISpecification<T> spec, Expression<Func<T, int>> keySelector)
+        public virtual async Task<int?> SumAsync(ISpecification<T> spec, Expression<Func<T, int?>> keySelector)
         {
             IQueryable<T> query = BuildQueryWithSpecifications(spec);
-
             return await query.SumAsync(keySelector);
         }
 
-        public virtual async Task<IEnumerable<Tkey>> Select<Tkey, OKey>(ISpecification<T> spec, Expression<Func<T, Tkey>> keySelector, Expression<Func<T, OKey>> orderSelector)
-        {
-            IQueryable<T> query = BuildQueryWithSpecifications(spec);
-
-            return await query.OrderBy(orderSelector).Select(keySelector).ToListAsync();
-        }
 
         #endregion
 
@@ -192,34 +182,8 @@ namespace CommGate.Data.Repositories
 
         protected IQueryable<T> BuildQueryWithSpecifications(ISpecification<T> spec)
         {
-            _dbContext.ChangeTracker.QueryTrackingBehavior = spec.IsTrackingEnabled ?
-                QueryTrackingBehavior.TrackAll : QueryTrackingBehavior.NoTracking;
-
             var queryableResultWithIncludes = spec.Includes
                 .Aggregate(_dbContext.Set<T>().AsQueryable(), (current, include) => current.Include(include));
-
-            var secondaryResult = spec.IncludeStrings
-                .Aggregate(queryableResultWithIncludes, (current, include) => current.Include(include));
-
-            if (spec.IsDeletedIncluded)
-                secondaryResult = secondaryResult.IgnoreQueryFilters();
-
-            if (spec.SingleQueryEnabled)
-                secondaryResult = secondaryResult.AsSingleQuery();
-
-            if (spec.IsTrackingEnabled == false)
-                secondaryResult = secondaryResult.AsNoTracking();
-
-            return secondaryResult.Where(spec.IsSatisifiedBy()).AsQueryable();
-        }
-
-        private IQueryable<R> BuildQueryWithSpecifications<R>(ISpecification<R> spec) where R : class
-        {
-            _dbContext.ChangeTracker.QueryTrackingBehavior = spec.IsTrackingEnabled ?
-                QueryTrackingBehavior.TrackAll : QueryTrackingBehavior.NoTracking;
-
-            var queryableResultWithIncludes = spec.Includes
-                .Aggregate(_dbContext.Set<R>().AsQueryable(), (current, include) => current.Include(include));
 
             var secondaryResult = spec.IncludeStrings
                 .Aggregate(queryableResultWithIncludes, (current, include) => current.Include(include));

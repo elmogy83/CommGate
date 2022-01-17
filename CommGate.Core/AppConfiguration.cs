@@ -12,6 +12,7 @@ namespace CommGate.Core
 {
     public static class AppConfiguration
     {
+        
         public static string GetConnectionString()
         {
             var configuration = new ConfigurationBuilder()
@@ -70,4 +71,5 @@ namespace CommGate.Core
             return true;
         }
     }
+   
 }

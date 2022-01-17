@@ -21,15 +21,15 @@ namespace CommGate.Data.Repositories
             var options = new DbContextOptionsBuilder<ApplicationDBContext>().UseLazyLoadingProxies().UseSqlServer(AppConfiguration.GetConnectionString()).Options;
             _context = new ApplicationDBContext(options);
         }
-        public IRepositoryBase<TEntity> Repository<TEntity>() where TEntity : class
+        public IRepositoryBase<T> Repository<T>() where T : class
         {
-            if (Repositories.Keys.Contains(typeof(TEntity)))
+            if (Repositories.Keys.Contains(typeof(T)))
             {
-                return Repositories[typeof(TEntity)] as IRepositoryBase<TEntity>;
+                return Repositories[typeof(T)] as IRepositoryBase<T>;
             }
 
-            IRepositoryBase<TEntity> repository = new RepositoryBase<TEntity>(_context);
-            Repositories.Add(typeof(TEntity), repository);
+            IRepositoryBase<T> repository = new RepositoryBase<T>(_context);
+            Repositories.Add(typeof(T), repository);
             return repository;
         }
         public int Complete()
@@ -65,8 +65,11 @@ namespace CommGate.Data.Repositories
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }      
+        }
 
-
+        public async Task<int> CommitAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
     }
 }

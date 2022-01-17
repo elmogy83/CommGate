@@ -23,17 +23,12 @@ namespace CommGate.Web.Extensions
             HttpClient MyHttpClient = new HttpClient(handler);
             MyHttpClient.BaseAddress = new Uri(AppConfiguration.GetAppSettingString("SiteSettings", "BaseUrl"));
             MyHttpClient.DefaultRequestHeaders
-     .Accept
-     .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            .Accept
+            .Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 
 
-            //MyHttpClient.DefaultRequestHeaders.Add("User", JsonConvert.SerializeObject(new ApiToken()
-            //{
-            //    UserName = User.Identity.Name,
-            //    IsAuthenticated = User.Identity.IsAuthenticated,
-            //    Claims = User.Claims.Select(s => s.Value).ToList()
-            //}));
+            // MyHttpClient.DefaultRequestHeaders.Add("Authorization", $"bearer {ff}");
             return MyHttpClient;
         }
 

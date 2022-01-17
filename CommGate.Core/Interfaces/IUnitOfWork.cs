@@ -11,6 +11,7 @@ namespace CommGate.Core.Interfaces
         IRepositoryBase<TEntity> Repository<TEntity>() where TEntity : class;
 
         int Complete();
+        Task<int> CommitAsync();
 
     }
 }
