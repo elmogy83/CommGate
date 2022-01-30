@@ -3,6 +3,7 @@ using CommGate.Web;
 using ElmahCore.Mvc;
 using ElmahCore.Sql;
 using Microsoft.AspNetCore.Authentication.Negotiate;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,10 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 builder.Services.AddDbContextPool<ApplicationDBContext>(options =>
                            options.UseLazyLoadingProxies()
                            .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDBContext>();
+
 
 builder.Services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 builder.Services.AddRazorPages()
@@ -82,7 +87,7 @@ var options = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
 app.UseRequestLocalization(options.Value);
 
 app.UseSession();
-
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

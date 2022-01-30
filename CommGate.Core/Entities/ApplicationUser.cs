@@ -1,51 +1,61 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CommGate.Core.Entities
 {
-    public class ApplicationUser : IdentityUser<string>
+
+    public class ApplicationUserRole : IdentityUserRole<string>
     {
-        #region Constants
+        public virtual ApplicationRole Role { get; set; }
+        public virtual ApplicationUser User { get; set; }
+    }
 
-        #endregion
+    public class ApplicationUserClaim : IdentityUserClaim<string>
+    {
+    }
 
-        #region Constructors
+    public class ApplicationRoleClaim : IdentityRoleClaim<string>
+    {
+    }
 
-        private ApplicationUser()
+    public class ApplicationUserToken : IdentityUserToken<string>
+    {
+    }
+
+    public class ApplicationUserLogin : IdentityUserLogin<string>
+    {
+    }
+
+    public class ApplicationRole : IdentityRole<string>
+    {
+        public ApplicationRole() { }
+        public ApplicationRole(string name)
+            : base()
         {
-
+            this.Name = name;
         }
-
-        public ApplicationUser(string firstName, string lastName)
-        {
-            FirstName = firstName;
-            LastName = lastName;    
-        }
-
-
-        #endregion
-
-        #region Members
-
-        public string FirstName { get; private set; }
-
-        public string LastName { get; private set; }
-
-        public DateTime? Birthdate { get; private set; }
-
-        #endregion
-
-        #region Public Methods
-
-
-
-        #endregion
-
-
+      
+        public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
 
     }
-}
+    public class ApplicationUser : IdentityUser<string>
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string Id { get; set; }
+        public string? DisplayName { get; set; }
+        public int? CompanyId { get; set; }
+        public byte? UserType { get; set; }
+        public bool? Deactivate { get; set; }
+        public DateTime? DeactivateOn { get; set; }
+        public int? DeactivateBy { get; set; }
+        public DateTime? LastLoginDate { get; set; }
+        public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
+        public virtual Company Company { get; set; }
+
+    }
+    }

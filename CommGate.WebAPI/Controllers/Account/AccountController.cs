@@ -44,11 +44,28 @@ namespace CommGate.WebAPI.Controllers.Account
         [HttpPost("token")]
         [AllowAnonymous]
         [ApiExplorerSettings(IgnoreApi = true)]
-        [ServiceFilter(typeof(ClientAuthenticationFilterAttribute))]
+        //[ServiceFilter(typeof(ClientAuthenticationFilterAttribute))]
         public async Task<IActionResult> Token(LoginBindingVM loginBindingModel)
         {
-            var userToken = await _oAuthAuthorizationProvider.GrantCredentials(Request, loginBindingModel);
-            return Ok(userToken);
+            try
+            {
+                var userToken = await _oAuthAuthorizationProvider.GrantCredentials(Request, loginBindingModel);
+                return Ok(userToken);
+            }
+            catch (Exception ex)
+            {
+                switch (ex.Message)
+                {
+                    case "InvalidLogin":
+                        return Unauthorized();
+                        break;
+                    default:
+                        return NotFound();
+                        break;
+                }
+             
+            }
+            
         }
 
         /// <summary>

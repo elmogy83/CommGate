@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
@@ -20,9 +19,12 @@ using CommGate.Core.DTOs;
 using CommGate.WebAPI.Providers.Interfaces;
 using CommGate.WebAPI.Providers;
 using CommGate.WebAPI.Filters;
-using SampleIdentity.Core.Services.Account;
 using CommGate.Service;
 using SampleIdentity.Services;
+using AutoMapper;
+using CommGate.WebAPI.Helpers;
+using ElmahCore.Mvc;
+using ElmahCore.Sql;
 
 namespace CommGate.WebAPI
 {
@@ -61,6 +63,21 @@ namespace CommGate.WebAPI
             ConfigureIdentityOption(services);
             ConfigureDpContainer(services);
             ConfigureMediatR(services);
+
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            services.AddElmah<SqlErrorLog>(options =>
+            {
+                options.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
+
+            });
+
+
         }
 
         /// <summary>
@@ -100,11 +117,13 @@ namespace CommGate.WebAPI
             app.UseAuthorization();
 
             app.UseResponseCaching();
-
+            app.UseElmah();
+           
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            
         }
 
 
@@ -190,6 +209,8 @@ namespace CommGate.WebAPI
             services.AddIdentity<ApplicationUser, ApplicationRole>()
              .AddEntityFrameworkStores<ApplicationDBContext>()
              .AddDefaultTokenProviders();
+
+
         }
 
         private void CofigureAuthentication(IServiceCollection services)

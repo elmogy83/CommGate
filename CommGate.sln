@@ -9,11 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommGate.Data", "CommGate.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommGate.Service", "CommGate.Service\CommGate.Service.csproj", "{7A5260A1-8443-4565-8D56-D95D682393BB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommGate.API", "CommGate.API\CommGate.API.csproj", "{C459A210-B951-43CA-95BD-4A30876D3638}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommGate.Web", "CommGate.Web\CommGate.Web.csproj", "{46B8A3EA-4897-4435-81D6-ED5E7E24A323}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommGate.WebAPI", "CommGate.WebAPI\CommGate.WebAPI.csproj", "{ACD341E7-275F-45FC-A7F0-F523135CC83A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommGate.Website", "CommGate.Website\CommGate.Website.csproj", "{AF10D60E-B2B0-46BA-9CDD-ABB89DCA9CE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,18 +31,14 @@ Global
 		{7A5260A1-8443-4565-8D56-D95D682393BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A5260A1-8443-4565-8D56-D95D682393BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A5260A1-8443-4565-8D56-D95D682393BB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C459A210-B951-43CA-95BD-4A30876D3638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C459A210-B951-43CA-95BD-4A30876D3638}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C459A210-B951-43CA-95BD-4A30876D3638}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C459A210-B951-43CA-95BD-4A30876D3638}.Release|Any CPU.Build.0 = Release|Any CPU
-		{46B8A3EA-4897-4435-81D6-ED5E7E24A323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{46B8A3EA-4897-4435-81D6-ED5E7E24A323}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{46B8A3EA-4897-4435-81D6-ED5E7E24A323}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{46B8A3EA-4897-4435-81D6-ED5E7E24A323}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ACD341E7-275F-45FC-A7F0-F523135CC83A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ACD341E7-275F-45FC-A7F0-F523135CC83A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACD341E7-275F-45FC-A7F0-F523135CC83A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACD341E7-275F-45FC-A7F0-F523135CC83A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF10D60E-B2B0-46BA-9CDD-ABB89DCA9CE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF10D60E-B2B0-46BA-9CDD-ABB89DCA9CE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF10D60E-B2B0-46BA-9CDD-ABB89DCA9CE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF10D60E-B2B0-46BA-9CDD-ABB89DCA9CE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

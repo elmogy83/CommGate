@@ -22,8 +22,7 @@ namespace CommGate.Core.DTOs
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
 
-        public string ReturnUrl { get; set; }
-
+    
         public int key { get; set; }
        
 

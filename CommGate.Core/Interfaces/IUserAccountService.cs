@@ -12,5 +12,6 @@ namespace CommGate.Core.Interfaces
     {
         Task<ApplicationUser> AuthorizeUser(AutheticationBindingVM autheticationBindingModel);
         Task<ApplicationUser> FindNormalUserByUserName(string userName);
+        Task<ApplicationUser> GetLoggedInUser();
     }
 }

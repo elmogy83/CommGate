@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SampleIdentity.Core.Services.Account
+namespace CommGate.Service
 {
     public class RefreshTokenService : IRefreshTokenService
     {

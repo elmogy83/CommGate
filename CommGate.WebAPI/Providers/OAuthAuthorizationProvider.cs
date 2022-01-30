@@ -50,14 +50,14 @@ namespace CommGate.WebAPI.Providers
         /// <returns></returns>
         public async Task<object> GrantCredentials(HttpRequest request, LoginBindingVM loginBindingModel)
         {
-            var clientId = HttpRequestHeaderHelper.GetClientIdFromHeader(request);
+           // var clientId = HttpRequestHeaderHelper.GetClientIdFromHeader(request);
             var authorizeRequest = new AutheticationBindingVM(loginBindingModel.UserName,
                 loginBindingModel.Password,
-                clientId);
+                "SystemClient");
 
             var loggedInUser = await _accountService.AuthorizeUser(authorizeRequest);
 
-            var userToken = await _tokenGeneratorProvider.GenerateUserToken(loggedInUser, clientId);
+            var userToken = await _tokenGeneratorProvider.GenerateUserToken(loggedInUser, "SystemClient");
             return userToken;
         }
 

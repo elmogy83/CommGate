@@ -128,10 +128,8 @@ namespace CommGate.WebAPI.Providers
                 refresh_token = refreshToken,
                 client_id = clientId,
                 userName = user.UserName,
-                name = user.FirstName + " " + user.LastName,
-                role = roles.ToList(),
-                firstName = user.FirstName,
-                lastName = user.LastName,
+                //name = user.DisplayName,
+                role = roles.ToList(),               
                 email = user.Email,
                 issued = utcNow,
                 expires = utcNow.AddSeconds(_configuration.Tokens.Lifetime)

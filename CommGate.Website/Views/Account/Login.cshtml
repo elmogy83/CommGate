@@ -1,0 +1,122 @@
+﻿@model CommGate.Core.DTOs.LoginVM
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <script src="~/scripts/jquery-3.2.1.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}
+
+<form asp-controller="Account" asp-action="Login" method="post">
+
+    <div class="container">
+        <div class="row">
+
+
+            <div class="col-md-12">
+
+                <div class="form">
+
+                    <div class="logo-box">
+
+                        
+                    </div>
+                    <div class="loginTit">
+                        <h2>Sign in</h2>
+                    </div>
+                    <div class="formLogin">
+                        <div class="formLogintwo">
+                            <div class="text-danger top">
+                                @Html.ValidationMessage("FailureText")
+                            </div>
+                            <div class="inputLogin">
+                                <i class="fa fa-user"></i>
+                                <input asp-for="Email" placeholder="Email" />
+                                @Html.ValidationMessageFor(i => i.Email)
+                            </div>
+                            <div class="inputLogin">
+                                <i class="fa fa-lock"></i>
+                                <input asp-for="Password" placeholder="Password" />
+                                @Html.ValidationMessageFor(i => i.Password)
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input asp-for="RememberMe">
+                                    <text>Remember me</text>
+                                </label>
+                                <label>
+                                    <a asp-controller="Account" asp-action="ForgetPassword">Forget password</a>
+                                </label>
+                            </div>
+                            <div class="centerInput"> <input type="submit" value="Sign in" onclick="btnSubmitOnLogin()" /></div>
+                            @Html.ValidationSummary();
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+
+
+    var crypt = {
+        secret: "CIPHERKEY",
+        encrypt: function (clear) {
+
+
+            var cipher = CryptoJS.AES.encrypt(clear, crypt.secret);
+            cipher = cipher.toString();
+            return cipher;
+        },
+
+        decrypt: function (cipher) {
+
+
+            var decipher = CryptoJS.AES.decrypt(cipher, crypt.secret);
+            decipher = decipher.toString(CryptoJS.enc.Utf8);
+            return decipher;
+        }
+    };
+
+
+    function btnSubmitOnLogin() {
+
+
+
+        var cipher = crypt.encrypt($("#Password").val());
+
+
+        localStorage.setItem('upwd', cipher);
+
+        if ($('#RememberMe').prop("checked") == true) {
+            localStorage.setItem('RememberMe', 'true');
+        }
+        else {
+            localStorage.setItem('RememberMe', 'false');
+        }
+        localStorage.setItem('uname', $("#Email").val());
+
+    }
+
+    $(document).ready(function () {
+
+        if (localStorage.getItem('RememberMe') != null && localStorage.getItem('RememberMe') == "true") {
+
+            var decipher = crypt.decrypt(localStorage.getItem('upwd'));
+
+            $("#Password").val(decipher);
+            $("#Email").val(localStorage.getItem('uname'));
+            $("#RememberMe").prop("checked", true)
+        }
+        else {
+            localStorage.clear();
+            $("#Password").val('');
+            $("#Email").val('');
+        }
+    });
+</script>
+
+
