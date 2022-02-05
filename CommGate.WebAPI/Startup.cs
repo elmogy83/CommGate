@@ -76,7 +76,7 @@ namespace CommGate.WebAPI
                 options.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
 
             });
-
+            
 
         }
 
